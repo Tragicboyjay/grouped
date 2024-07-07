@@ -1,0 +1,4 @@
+CREATE TABLE topics (
+    topic_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+)
