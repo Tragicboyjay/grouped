@@ -1,5 +1,5 @@
-create database `grouped`
-;
+DROP DATABASE IF EXISTS grouped;
 
-use `grouped`
-;
+CREATE DATABASE `grouped`;
+
+USE `grouped`;
