@@ -7,3 +7,7 @@ CREATE TABLE users (
     password VARCHAR(255),
     created_at DATETIME
 )
+
+SELECT * FROM users;
+DELETE FROM users
+WHERE user_id = 1;

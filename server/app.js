@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const db = require("./db")
 
 const topicRoute = require('./routes/topicRoute')
+const authRoute = require('./routes/authRoute')
 
 const app = express();
 app.use(cors());
@@ -12,7 +13,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/topics', topicRoute)
+app.use('/topics', topicRoute);
+app.use('/auth', authRoute);
 
 app.get("/test", (req,res) => {
     return res.send("workng!");

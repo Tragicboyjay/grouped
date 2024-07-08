@@ -7,6 +7,6 @@ CREATE TABLE messages(
     group_id INT, -- which group the message was sent to
     sent_at DATETIME,
     FOREIGN KEY (authour_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id),
+    FOREIGN KEY (group_id) REFERENCES `groups`(group_id)
 
 );
