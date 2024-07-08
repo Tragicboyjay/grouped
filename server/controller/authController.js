@@ -45,8 +45,39 @@ async function createUser(req,res) {
     }
 }
 
-function authenticateUser(req,res) {
+async function authenticateUser(req,res) {
+    const { username, password } = req.body;
+    const lcUsername = username.toLowerCase();
 
+    const query = util.promisify(db.query).bind(db);
+
+    try {
+        const search = await query("SELECT user_id, username, email, password FROM users WHERE username = ?", [lcUsername]);
+
+        if (search.length < 1) {
+            return res.status(404).json({ message: "Username or password incorrect." });
+        }
+
+        const existingUser = search[0];
+
+        const passwordMatch = await bcrypt.compare(password, existingUser.password);
+
+        if (!passwordMatch) {
+            return res.status(404).json({ message: "Username or password incorrect."});
+        }
+
+        const user = {
+            id: existingUser.user_id,
+            username: existingUser.username,
+            email: existingUser.email
+        }
+
+        return res.status(200).json({ message: "User successfully loged in.", user: user})
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }  
 }
 
 module.exports = {
