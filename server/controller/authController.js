@@ -25,16 +25,17 @@ async function createUser(req,res) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createUserQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-        const result = await query(createUserQuery, [lcUsername, lcEmail, hashedPassword]);
+        const createUserQuery = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)";
+        const result = await query(createUserQuery, [lcUsername, lcEmail, hashedPassword, new Date(Date.now())]);
 
-        const getUserQuery = "SELECT user_id, username, email FROM users WHERE user_id = ?";
+        const getUserQuery = "SELECT user_id, username, email, created_at FROM users WHERE user_id = ?";
         const userResult = await query(getUserQuery, [result.insertId]);
 
         const newUser = {
             id: userResult[0].user_id,
             username: userResult[0].username,
             email: userResult[0].email,
+            created_at: userResult[0].created_at
         };
 
         return res.status(201).json({ message: "User created successfully", user: newUser });
@@ -52,7 +53,7 @@ async function authenticateUser(req,res) {
     const query = util.promisify(db.query).bind(db);
 
     try {
-        const search = await query("SELECT user_id, username, email, password FROM users WHERE username = ?", [lcUsername]);
+        const search = await query("SELECT user_id, username, email, password, created_at FROM users WHERE username = ?", [lcUsername]);
 
         if (search.length < 1) {
             return res.status(404).json({ message: "Username or password incorrect." });
@@ -69,7 +70,8 @@ async function authenticateUser(req,res) {
         const user = {
             id: existingUser.user_id,
             username: existingUser.username,
-            email: existingUser.email
+            email: existingUser.email,
+            created_at: existingUser.created_at
         }
 
         return res.status(200).json({ message: "User successfully loged in.", user: user})
