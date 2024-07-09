@@ -1,8 +1,11 @@
+const util = require('util');
+const db = require('../db');
 const jwt = require('jsonwebtoken');
-const User = require("../Models/UserModel");
 
 const protect = async function(req, res, next) {
     let token;
+
+    const query = util.promisify(db.query).bind(db);
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
@@ -10,22 +13,23 @@ const protect = async function(req, res, next) {
 
             const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-            req.user = await User.findById(decoded.id).select('-password');
+            const search = await query("SELECT user_id, username, email, created_at FROM users WHERE user_id = ?", [decoded.id]);
 
-            if (!req.user) {
+            if (search.length > 0) {
+                req.user = search[0];
+                return next();
+            } else {
                 return res.status(401).json({ message: "Not Authorized" });
             }
-
-            next();
             
         } catch (error) {
             console.log(error);
-            res.status(401).json({ message: "Not Authorized" });
+            return res.status(401).json({ message: "Not Authorized" });
         }
     }
 
     if (!token) {
-        res.status(401).json({ message: "Not Authorized, no token" });
+        return res.status(401).json({ message: "Not Authorized, no token" });
     }
 };
 

@@ -9,3 +9,7 @@ CREATE TABLE `groups` (
     FOREIGN KEY (topic_id) REFERENCES topics(topic_id),
     FOREIGN KEY (admin_id) REFERENCES users(user_id)
 )
+
+SELECT * FROM `groups`;
+DELETE FROM `groups`
+WHERE group_id = 2;
