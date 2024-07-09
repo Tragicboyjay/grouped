@@ -46,7 +46,28 @@ async function createGroup(req,res) {
 }
 
 async function deleteGroup(req,res) {
+    const userId = req.user.user_id;
+    const { groupId } = req.params;
 
+    const query = util.promisify(db.query).bind(db);
+
+    try {
+        const existingGroup = await query("SELECT admin_id, group_id FROM `groups` WHERE group_id = ?", [groupId]);
+
+        if (existingGroup.length < 1) return res.status(409).json({ message: "Group does not exist." });
+        
+    
+        const groupAdminId = existingGroup[0].admin_id;
+    
+        if (groupAdminId != userId) return res.status(401).json({ message: "Not authorized." });
+    
+        await query("DELETE FROM `groups` WHERE group_id = ?", [existingGroup[0].group_id]);
+    
+        return res.status(200).json({ message: "Group deleted successfully."});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "Internal Server Error" })
+    }
 }
 
 module.exports = {
