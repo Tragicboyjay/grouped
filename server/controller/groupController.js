@@ -65,12 +65,26 @@ async function deleteGroup(req,res) {
     
         return res.status(200).json({ message: "Group deleted successfully."});
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+async function getGroups(req,res) {
+    const query = util.promisify(db.query).bind(db);
+
+    try {
+        const allGroups = await query("SELECT * FROM `groups`");
+
+        return res.status(200).json({ message: "Groups fetched successfully", groups: allGroups});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
 module.exports = {
     createGroup,
-    deleteGroup
+    deleteGroup,
+    getGroups
 }

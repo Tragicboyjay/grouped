@@ -4,10 +4,14 @@ const { protect } = require("../middleware/authMiddleware");
 
 const {
     createGroup,
-    deleteGroup
-} = require('../controller/groupController')
+    deleteGroup,
+    getGroups
+} = require('../controller/groupController');
+
 
 router.post('/create/:topicId', protect, createGroup);
 router.delete('/:groupId', protect, deleteGroup);
+
+router.get("/all", getGroups)
 
 module.exports = router;
