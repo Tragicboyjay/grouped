@@ -4,6 +4,8 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const db = require("./db")
 
+const { sanitizeMiddleware } = require("./middleware/sanitizeMiddleware");
+
 const topicRoute = require('./routes/topicRoute')
 const authRoute = require('./routes/authRoute')
 const groupRoute = require('./routes/groupRoute')
@@ -14,6 +16,8 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(sanitizeMiddleware);
 
 app.use('/topics', topicRoute);
 app.use('/auth', authRoute);

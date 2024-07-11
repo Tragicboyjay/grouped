@@ -8,7 +8,7 @@ const {
     getMessagesByUser,
     getMessagesByGroup,
     getMessagesByTopic
-} = require("../controller/messageController")
+} = require("../controller/messageController");
 
 router.post("/send/:groupId", protect, sendMessage);
 
