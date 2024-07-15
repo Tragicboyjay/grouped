@@ -10,3 +10,5 @@ CREATE TABLE messages(
     FOREIGN KEY (group_id) REFERENCES `groups`(group_id)
 
 );
+
+SELECT * FROM messages;
