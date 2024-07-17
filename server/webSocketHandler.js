@@ -38,7 +38,19 @@ function handleWebSocketEvents(io) {
             try {
                 const result = await query("INSERT INTO messages (body, authour_id, group_id, sent_at) VALUES (?,?,?,?)", [messageBody, userId, groupId, formattedDate]);
 
-                const newMessage = await query("SELECT body, authour_id, group_id, sent_at, message_id FROM messages WHERE message_id = ?", [result.insertId]);
+                const newMessage = await query(
+                    `SELECT 
+                      m.body, 
+                      m.authour_id, 
+                      m.group_id, 
+                      m.sent_at, 
+                      m.message_id,
+                      u.username 
+                     FROM messages m
+                     JOIN users u ON m.authour_id = u.user_id
+                     WHERE m.message_id = ?`, 
+                    [result.insertId]
+                  );
 
                 io.to(groupId).emit('message', { message: 'Message received', newMessage: newMessage[0] });
                 

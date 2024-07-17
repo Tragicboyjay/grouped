@@ -10,7 +10,7 @@
         let socket;
 
         window.onload = () => {
-            socket = io('http://localhost:8120'); // Replace with your Socket.IO server URL
+            socket = io('http://localhost:8120');
 
             socket.on('connect', () => {
                 console.log('Connected to the Socket.IO server');
@@ -22,7 +22,7 @@
                 const messageBox = document.getElementById('messageBox');
                 const newMessage = document.createElement('div');
                 if (data.newMessage) {
-                    newMessage.textContent = `(${data.newMessage.sent_at}) ${data.newMessage.body}`;
+                    newMessage.textContent = `${data.newMessage.username}: ${data.newMessage.body}`;
                 } else {
                     newMessage.textContent = data.message;
                 }
