@@ -13,7 +13,6 @@ const NotFound = () => {
 
     return (  
         <Flex
-            py="2rem"
             width="100%"
             height="100%"
             alignItems="center"

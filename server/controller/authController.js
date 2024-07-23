@@ -36,7 +36,7 @@ async function createUser(req,res) {
             username: userResult[0].username,
             email: userResult[0].email,
             created_at: userResult[0].created_at,
-            token: generateToken(user_id)
+            token: generateToken(userResult[0].user_id)
         };
 
         return res.status(201).json({ message: "User created successfully", user: newUser });

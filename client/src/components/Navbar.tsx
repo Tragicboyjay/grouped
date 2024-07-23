@@ -21,6 +21,7 @@ const Links = [
 
 const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) => (
   <ChakraLink
+    
     as={RouterLink}
     to={to}
     px={2}
@@ -48,7 +49,9 @@ const NavBar: React.FC = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack spacing={8} alignItems={'center'}>
-          <Box>Logo</Box>
+          <Box
+            cursor="pointer"
+          >Logo</Box>
           <HStack
             as={'nav'}
             spacing={4}
@@ -60,6 +63,7 @@ const NavBar: React.FC = () => {
         </HStack>
         <Flex alignItems={'center'}>
           <Button
+            _hover={{color: "purple"}}
             variant={'solid'}
             colorScheme={'purple'}
             size={'sm'}>

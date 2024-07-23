@@ -10,4 +10,4 @@ CREATE TABLE users (
 
 SELECT * FROM users;
 DELETE FROM users
-WHERE user_id = 6;
+WHERE user_id = 10;
