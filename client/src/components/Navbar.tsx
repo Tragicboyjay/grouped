@@ -8,24 +8,30 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
-  Link,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Link as RouterLink } from 'react-router-dom';
 
-const Links = ['Home', 'About', 'Contact'];
+const Links = [
+  { label: 'Home', path: '/' },
+  { label: 'About', path: '#' },
+  { label: 'Contact', path: '#' },
+];
 
-const NavLink = ({ children }: { children: React.ReactNode }) => (
-  <Link
+const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) => (
+  <ChakraLink
+    as={RouterLink}
+    to={to}
     px={2}
     py={1}
     rounded={'md'}
     _hover={{
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={'#'}>
+    }}>
     {children}
-  </Link>
+  </ChakraLink>
 );
 
 const NavBar: React.FC = () => {
@@ -48,21 +54,14 @@ const NavBar: React.FC = () => {
             spacing={4}
             display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
             ))}
           </HStack>
         </HStack>
         <Flex alignItems={'center'}>
           <Button
             variant={'solid'}
-            colorScheme={'teal'}
-            size={'sm'}
-            mr={4}>
-            Sign Up
-          </Button>
-          <Button
-            variant={'outline'}
-            colorScheme={'teal'}
+            colorScheme={'purple'}
             size={'sm'}>
             Log in
           </Button>
@@ -73,7 +72,7 @@ const NavBar: React.FC = () => {
         <Box pb={4} display={{ md: 'none' }}>
           <Stack as={'nav'} spacing={4}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
             ))}
           </Stack>
         </Box>

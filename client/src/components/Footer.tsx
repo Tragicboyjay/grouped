@@ -7,9 +7,9 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden,
-  Link,
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { Link as RouterLink } from 'react-router-dom';
 
 const SocialButton = ({
   children,
@@ -56,10 +56,10 @@ const Footer: React.FC = () => {
         align={'center'}>
         <Text fontSize={'lg'}>Logo</Text>
         <Stack direction={'row'} spacing={6}>
-          <Link href={'#'}>Home</Link>
-          <Link href={'#'}>About</Link>
-          <Link href={'#'}>Services</Link>
-          <Link href={'#'}>Contact</Link>
+          <RouterLink to={'/'}>Home</RouterLink>
+          <RouterLink to={'#'}>About</RouterLink>
+          <RouterLink to={'#'}>Services</RouterLink>
+          <RouterLink to={'#'}>Contact</RouterLink>
         </Stack>
       </Container>
 
@@ -77,13 +77,13 @@ const Footer: React.FC = () => {
           align={{ base: 'center', md: 'center' }}>
           <Text>© 2024 Your Company. All rights reserved.</Text>
           <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'Twitter'} href={'#'}>
+            <SocialButton label={'Twitter'} href={'https://twitter.com'}>
               <FaTwitter />
             </SocialButton>
-            <SocialButton label={'YouTube'} href={'#'}>
+            <SocialButton label={'YouTube'} href={'https://youtube.com'}>
               <FaYoutube />
             </SocialButton>
-            <SocialButton label={'Instagram'} href={'#'}>
+            <SocialButton label={'Instagram'} href={'https://instagram.com'}>
               <FaInstagram />
             </SocialButton>
           </Stack>
