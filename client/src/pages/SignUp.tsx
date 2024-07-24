@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ISignUpUser } from "../interfaces/ISignUpUser";
-
+import { useAuth } from "../context/authContext";
 
 const SignUp = () => {
     const toast = useToast();
@@ -23,6 +23,8 @@ const SignUp = () => {
     const [ passwordComfirmInput, setPasswordComfirmInput ] = useState<string | null>(null);
 
     const [ signUpError, setSignUpError ] = useState<string | null>(null);
+
+    const { loginUser } = useAuth();
 
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsernameInput(event.target.value);
@@ -72,7 +74,7 @@ const SignUp = () => {
 
             const data = await response.json();
 
-            // handle user context
+            loginUser(data.user);
 
             toast({
                 title: data.message,
