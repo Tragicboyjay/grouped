@@ -7,6 +7,7 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden,
+  Heading,
 } from '@chakra-ui/react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
@@ -54,7 +55,7 @@ const Footer: React.FC = () => {
         spacing={4}
         justify={'center'}
         align={'center'}>
-        <Text fontSize={'lg'}>Logo</Text>
+        <Heading size="md">Grouped</Heading>
         <Stack direction={'row'} spacing={6}>
           <RouterLink to={'/'}>Home</RouterLink>
           <RouterLink to={'#'}>About</RouterLink>
@@ -75,7 +76,7 @@ const Footer: React.FC = () => {
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}>
-          <Text>© 2024 Your Company. All rights reserved.</Text>
+          <Text>© {new Date().getUTCFullYear()} Grouped. All rights reserved.</Text>
           <Stack direction={'row'} spacing={6}>
             <SocialButton label={'Twitter'} href={'https://twitter.com'}>
               <FaTwitter />

@@ -9,9 +9,12 @@ import {
   useColorModeValue,
   Stack,
   Link as ChakraLink,
+  Text,
+  Heading,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
 
 const Links = [
   { label: 'Home', path: '/' },
@@ -40,6 +43,8 @@ const NavBar: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const { user } = useAuth();
+
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -54,7 +59,7 @@ const NavBar: React.FC = () => {
           <Box
             onClick={() => navigate("/")}
             cursor="pointer"
-          >Logo</Box>
+          ><Heading size="md">Grouped</Heading></Box>
           <HStack
             as={'nav'}
             spacing={4}
@@ -65,14 +70,17 @@ const NavBar: React.FC = () => {
           </HStack>
         </HStack>
         <Flex alignItems={'center'}>
-          <Button
-            onClick={() => navigate("/sign_in")}
-            _hover={{color: "purple"}}
-            variant={'solid'}
-            colorScheme={'purple'}
-            size={'sm'}>
-            Log in
-          </Button>
+            { user ? <Text><i className="fa-solid fa-user"></i> {user.username}</Text> : 
+                <Button
+                onClick={() => navigate("/sign_in")}
+                _hover={{color: "purple"}}
+                variant={'solid'}
+                colorScheme={'purple'}
+                size={'sm'}>
+                Log in
+            </Button>
+            }
+
         </Flex>
       </Flex>
 
