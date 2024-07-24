@@ -11,7 +11,7 @@ import {
   Link as ChakraLink,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const Links = [
   { label: 'Home', path: '/' },
@@ -38,6 +38,8 @@ const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) =>
 const NavBar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const navigate = useNavigate();
+
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -63,6 +65,7 @@ const NavBar: React.FC = () => {
         </HStack>
         <Flex alignItems={'center'}>
           <Button
+            onClick={() => navigate("/sign_in")}
             _hover={{color: "purple"}}
             variant={'solid'}
             colorScheme={'purple'}

@@ -7,6 +7,7 @@ import {
     FormLabel,
     Link as ChakraLink,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -15,6 +16,8 @@ import { ISignUpUser } from "../interfaces/ISignUpUser";
 
 
 const SignUp = () => {
+    const toast = useToast();
+
     const [ usernameInput, setUsernameInput ] = useState<string | null>(null);
     const [ emailInput, setEmailInput ] = useState<string | null>(null);
     const [ passwordInput, setPasswordInput ] = useState<string | null>(null);
@@ -72,6 +75,13 @@ const SignUp = () => {
 
             // handle user context
 
+            toast({
+                title: data.message,
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+            })
+
             setUsernameInput(null);
             setEmailInput(null);
             setPasswordInput(null);
@@ -82,9 +92,18 @@ const SignUp = () => {
         } catch (error) {
             if (error instanceof Error) {
                 setSignUpError(error.message);
+
             } else {
                 setSignUpError('An unknown error occurred.');
             }
+
+            toast({
+                title: 'Error',
+                description: signUpError,
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
         }
         
 
