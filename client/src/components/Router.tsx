@@ -5,6 +5,7 @@ import SignUp from "../pages/SignUp";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import ChatGroup from "../pages/ChatGroup";
+import Groups from "../pages/Groups";
 
 const Router = () => {
     return (  
@@ -14,6 +15,7 @@ const Router = () => {
             <Route path="/sign_up" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/chat/:groupId" element={<ChatGroup />} />
+            <Route path="/groups" element={<Groups />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
