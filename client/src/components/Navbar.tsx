@@ -52,6 +52,7 @@ const NavBar: React.FC = () => {
         />
         <HStack spacing={8} alignItems={'center'}>
           <Box
+            onClick={() => navigate("/")}
             cursor="pointer"
           >Logo</Box>
           <HStack

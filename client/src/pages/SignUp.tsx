@@ -10,7 +10,6 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ISignUpUser } from "../interfaces/ISignUpUser";
 
@@ -80,6 +79,7 @@ const SignUp = () => {
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
+                position: "top",
             })
 
             setUsernameInput(null);
@@ -92,18 +92,20 @@ const SignUp = () => {
         } catch (error) {
             if (error instanceof Error) {
                 setSignUpError(error.message);
+                toast({
+                    title: 'Error',
+                    description: error.message,
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top",
+                })
 
             } else {
                 setSignUpError('An unknown error occurred.');
             }
 
-            toast({
-                title: 'Error',
-                description: signUpError,
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            })
+
         }
         
 

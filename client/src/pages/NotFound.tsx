@@ -20,10 +20,11 @@ const NotFound = () => {
             direction="column"
             gap="1rem"
         >
-            <Image src={PageNotFound} alt="Page Not Found svg" boxSize="xs" />
+            <Image src={PageNotFound} alt="Page Not Found svg" boxSize="xs"/>
             <Heading size="lg">Uh-oh! We can’t find the page you’re looking for.</Heading>
             <Flex
                 gap="1rem"
+                mb="1rem"
             >
                 <Button
 
