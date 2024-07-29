@@ -30,10 +30,10 @@ async function createGroup(req,res) {
         const groupResult = await query("SELECT group_id, name, topic_id, admin_id, created_at FROM `groups` WHERE group_id = ?", [result.insertId]);
 
         const newGroup = {
-            id: groupResult[0].group_id,
+            group_id: groupResult[0].group_id,
             name: groupResult[0].name,
-            topicId: groupResult[0].topic_id,
-            adminId: groupResult[0].admin_id,
+            topic_id: groupResult[0].topic_id,
+            admin_id: groupResult[0].admin_id,
             created_at: groupResult[0].created_at
         } 
 

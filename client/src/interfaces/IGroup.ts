@@ -1,5 +1,5 @@
 export interface IGroup {
-    group_Id: number,
+    group_id: number,
     name: string,
     topic_id: number,
     admin_id: number,
