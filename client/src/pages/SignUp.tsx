@@ -38,7 +38,7 @@ const SignUp = () => {
     const handlePasswordComfirmInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordComfirmInput(event.target.value);
     }
-
+//  Handle sign-up form submission
     const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -74,7 +74,7 @@ const SignUp = () => {
 
             const data = await response.json();
 
-            loginUser(data.user);
+            loginUser(data.user);// Log in the user immediately after successful sign-up
 
             toast({
                 title: data.message,
@@ -83,7 +83,7 @@ const SignUp = () => {
                 isClosable: true,
                 position: "top",
             })
-
+            // Reset input fields after successful sign-up
             setUsernameInput(null);
             setEmailInput(null);
             setPasswordInput(null);

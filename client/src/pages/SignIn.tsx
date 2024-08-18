@@ -10,12 +10,14 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Added useNavigate to handle navigation after successful sign-in
 import { ISignInUser } from "../interfaces/ISignInUser";
 import { useAuth } from "../context/authContext";
 
 const SignIn = () => {
     const toast = useToast();
+    const navigate = useNavigate(); //james  Added navigate function for redirecting after successful sign-in
 
     const [ usernameInput, setUsernameInput ] = useState<string | null>(null);
     const [ passwordInput, setPasswordInput ] = useState<string | null>(null);
@@ -31,8 +33,9 @@ const SignIn = () => {
     const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordInput(event.target.value);
     }
-
-    const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+    //james
+   // const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => { // Renamed function to reflect its purpose (SignIn)
         event.preventDefault();
 
         setSignInError(null);
@@ -63,7 +66,8 @@ const SignIn = () => {
             const data = await response.json();
 
             loginUser(data.user);
-
+            console.log(data);  // debug the response
+            localStorage.setItem('token', data.user.token);  // Save the token
             toast({
                 title: data.message,
                 status: 'success',
@@ -74,6 +78,10 @@ const SignIn = () => {
 
             setUsernameInput(null);
             setPasswordInput(null);
+
+            // Navigate to the profile or home page after successful sign-in
+            navigate('/profile'); // Assuming you have a profile page; replace with the appropriate path
+
         } catch (error) {
             if (error instanceof Error) {
                 setSignInError(error.message);
@@ -115,7 +123,9 @@ const SignIn = () => {
             >
                 <Heading size="lg">Sign In</Heading>
 
-                    <form style={{width: "50%", minWidth: "250px"}} onSubmit={e => handleSignUp(e)}>
+                {/*james <form style={{width: "50%", minWidth: "250px"}} onSubmit={e => handleSignUp(e)}> */}
+                    <form style={{width: "50%", minWidth: "250px"}} onSubmit={handleSignIn}>
+
                         <Text textAlign="center" color='red' mb="1rem">{signInError}</Text>
 
                         <FormControl
@@ -138,7 +148,7 @@ const SignIn = () => {
                             <Input
                                 type="password"
                                 placeholder="Password"
-                                value={!passwordInput? "" : passwordInput}
+                                value={!passwordInput ? "" : passwordInput}
                                 onChange={handlePasswordInputChange}
                             />
                         </FormControl>
@@ -154,16 +164,16 @@ const SignIn = () => {
                             >Sign Up</Button>
                         </Flex>
 
-                        <Text textAlign="center">Don't have an account? <ChakraLink _hover={{color: "purple"}} as={Link} to="/sign_up">Sign Up Now!</ChakraLink></Text>
+                        <Text textAlign="center">Don't have an account? <ChakraLink _hover={{color: "purple"}} as={Link}
+                                                                                    to="/sign_up">Sign Up
+                            Now!</ChakraLink></Text>
 
                     </form>
 
 
-
-
             </Flex>
         </Flex>
-    );
+);
 }
- 
+
 export default SignIn;
