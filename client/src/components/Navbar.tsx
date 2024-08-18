@@ -4,7 +4,7 @@ import {
   Flex,
   HStack,
   IconButton,
-  Button,
+  Button,// Import Button for logout
   useDisclosure,
   useColorModeValue,
   Stack,
@@ -12,8 +12,8 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';// Use navigate for redirecting after logout
+import { Link as RouterLink, useNavigate } from 'react-router-dom';//Use navigate for redirecting after logout
 import { useAuth } from '../context/authContext';
 
 
@@ -37,18 +37,24 @@ const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) =>
 const NavBar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();//  Added navigate function for redirecting after logout
 
-  const { user } = useAuth();
+  //const { user } = useAuth();
+  const { user, logoutUser } = useAuth(); // james: Access user data and logout function from the auth context
+  const handleLogout = () => { // james: Function to handle user logout
+    logoutUser(); // james: Log out the user
+    navigate('/sign_in'); // james: Redirect to the sign-in page after logout
+  };
+
 
   const Links = !user ? [
     { label: 'Home', path: '/' },
-    { label: 'About', path: '#' },
-    { label: 'Contact', path: '#' },
+    { label: 'About', path: '/about' },
+    { label: 'Contact', path: '/contact' },
   ] : [
     { label: 'Home', path: '/' },
-    { label: 'About', path: '#' },
-    { label: 'Contact', path: '#' },
+    { label: 'About', path: '/about' },
+    { label: 'Contact', path: '/contact' },
     { label: 'Groups', path: '/groups' },
     { label: 'Profile', path: '/profile' },
   ];
@@ -79,7 +85,7 @@ const NavBar: React.FC = () => {
           </HStack>
         </HStack>
         <Flex alignItems={'center'}>
-            { user ? <Text cursor="pointer" onClick={() => navigate('/profile')}><i className="fa-solid fa-user"></i> {user.username}</Text> : 
+          {/*{ user ? <Text cursor="pointer" onClick={() => navigate('/profile')}><i className="fa-solid fa-user"></i> {user.username}</Text> :
                 <Button
                 onClick={() => navigate("/sign_in")}
                 _hover={{color: "purple"}}
@@ -88,7 +94,26 @@ const NavBar: React.FC = () => {
                 size={'sm'}>
                 Log in
             </Button>
-            }
+            }*/}
+          { user ? (
+                  <>
+                    <Text cursor="pointer" onClick={() => navigate('/profile')}><i className="fa-solid fa-user"></i> {user.username}</Text>
+                    <Box mx={2}></Box> {/* james: Add space between username and logout button */}
+                    <Button colorScheme="red" size="sm" onClick={handleLogout}>
+                      Logout
+                    </Button> {/* james: Added Logout button next to username */}
+                  </>
+              ) :
+              <Button
+                  onClick={() => navigate("/sign_in")}
+                  _hover={{color: "purple"}}
+                  variant={'solid'}
+                  colorScheme={'purple'}
+                  size={'sm'}>
+                Log in
+              </Button>
+          }
+
 
         </Flex>
       </Flex>

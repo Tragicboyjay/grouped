@@ -1,6 +1,6 @@
 const util = require("util");
 const db = require("../db");
-
+// Create a new group
 async function createGroup(req,res) {
     const { topicId } = req.params;
     const { groupName } = req.body;
@@ -44,7 +44,7 @@ async function createGroup(req,res) {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
-
+// Delete an existing group
 async function deleteGroup(req,res) {
     const userId = req.user.user_id;
     const { groupId } = req.params;
@@ -70,7 +70,15 @@ async function deleteGroup(req,res) {
     }
 }
 
+
+
+
+// Fetch all groups
 async function getGroups(req,res) {
+
+    //const userId = req.user.user_id;
+    //const { groupId } = req.body;
+
     const query = util.promisify(db.query).bind(db);
 
     try {
@@ -83,8 +91,47 @@ async function getGroups(req,res) {
     }
 }
 
+
+// James --- New Functionality Added Below ---
+
+// Allow users to join an existing group
+async function joinGroup(req, res) {
+    const userId = req.user.user_id; // The ID of the user joining the group
+    const { groupId } = req.body; // The ID of the group to join
+
+    const query = util.promisify(db.query).bind(db);
+
+    try {
+        const existingGroup = await query("SELECT 1 FROM `groups` WHERE group_id = ?", [groupId]);
+
+        if (existingGroup.length < 1) {
+            return res.status(404).json({ message: "Group does not exist." });
+        }
+
+        // Check if the user is already a member of the group
+        const existingMembership = await query("SELECT 1 FROM user_groups WHERE user_id = ? AND group_id = ?", [userId, groupId]);
+
+        if (existingMembership.length > 0) {
+            return res.status(409).json({ message: "User is already a member of this group." });
+        }
+
+        // Add the user to the group
+        await query("INSERT INTO user_groups (user_id, group_id) VALUES (?, ?)", [userId, groupId]);
+
+        return res.status(200).json({ message: "Joined group successfully." });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+// --- End of New Functionality ---
+
+
 module.exports = {
     createGroup,
     deleteGroup,
-    getGroups
+    getGroups,
+    joinGroup //James Export the new joinGroup function
 }
