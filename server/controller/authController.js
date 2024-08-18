@@ -94,43 +94,45 @@ function generateToken(id) {
 
 //James --- New Functionality Added Below ---
 
+//Justice --- Moved to user controller ---
+
 // Update user details (username, email, and/or password)
-async function updateUser(req, res) {
-    const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication middleware
-    const { username, email, password } = req.body;
+// async function updateUser(req, res) {
+//     const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication middleware
+//     const { username, email, password } = req.body;
 
-    const lcUsername = username.toLowerCase();
-    const lcEmail = email.toLowerCase();
+//     const lcUsername = username.toLowerCase();
+//     const lcEmail = email.toLowerCase();
 
-    const query = util.promisify(db.query).bind(db);
+//     const query = util.promisify(db.query).bind(db);
 
-    try {
-        const existingEmail = await query("SELECT 1 FROM users WHERE email = ? AND user_id != ?", [lcEmail, userId]);
-        const existingUsername = await query("SELECT 1 FROM users WHERE username = ? AND user_id != ?", [lcUsername, userId]);
+//     try {
+//         const existingEmail = await query("SELECT 1 FROM users WHERE email = ? AND user_id != ?", [lcEmail, userId]);
+//         const existingUsername = await query("SELECT 1 FROM users WHERE username = ? AND user_id != ?", [lcUsername, userId]);
 
-        if (existingEmail.length > 0) {
-            return res.status(409).json({ message: "Email already taken." });
-        }
+//         if (existingEmail.length > 0) {
+//             return res.status(409).json({ message: "Email already taken." });
+//         }
 
-        if (existingUsername.length > 0) {
-            return res.status(409).json({ message: "Username already taken." });
-        }
+//         if (existingUsername.length > 0) {
+//             return res.status(409).json({ message: "Username already taken." });
+//         }
 
-        let hashedPassword = null;
-        if (password) {
-            hashedPassword = await bcrypt.hash(password, 10);
-        }
+//         let hashedPassword = null;
+//         if (password) {
+//             hashedPassword = await bcrypt.hash(password, 10);
+//         }
 
-        const updateUserQuery = "UPDATE users SET username = ?, email = ?, password = ? WHERE user_id = ?";
-        await query(updateUserQuery, [lcUsername, lcEmail, hashedPassword || req.user.password, userId]);
+//         const updateUserQuery = "UPDATE users SET username = ?, email = ?, password = ? WHERE user_id = ?";
+//         await query(updateUserQuery, [lcUsername, lcEmail, hashedPassword || req.user.password, userId]);
 
-        return res.status(200).json({ message: "User updated successfully" });
+//         return res.status(200).json({ message: "User updated successfully" });
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
-}
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ message: "Internal Server Error" });
+//     }
+// }
 
 // --- End of New Functionality ---
 
@@ -139,5 +141,4 @@ async function updateUser(req, res) {
 module.exports = {
     createUser,
     authenticateUser,
-    updateUser // James Export the new updateUser function
 }

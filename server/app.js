@@ -26,6 +26,7 @@ const topicRoute = require('./routes/topicRoute');
 const authRoute = require('./routes/authRoute');
 const groupRoute = require('./routes/groupRoute');
 const messageRoute = require('./routes/messageRoute');
+const userRoute = require('./routes/userRoute');
 
 app.use(cors());
 
@@ -39,6 +40,7 @@ app.use('/topics', topicRoute);
 app.use('/auth', authRoute);
 app.use('/groups', groupRoute);
 app.use('/messages', messageRoute);
+app.use('/users', userRoute);
 
 app.get("/test", (req, res) => {
     return res.send("working!");

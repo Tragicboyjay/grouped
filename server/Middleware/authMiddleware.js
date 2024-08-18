@@ -3,6 +3,7 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 
 const protect = async function(req, res, next) {
+    console.log("here")
     let token;
 
     const query = util.promisify(db.query).bind(db);
@@ -18,6 +19,7 @@ const protect = async function(req, res, next) {
             if (search.length > 0) {
                 console.log('User found:', search[0]);  // Debugging log
                 req.user = search[0];
+                console.log("here " + req.user)
                 return next();
 
             } else {
