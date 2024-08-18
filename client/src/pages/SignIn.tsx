@@ -151,7 +151,7 @@ const SignIn = () => {
                             <Button
                                 colorScheme="purple"
                                 type="submit"
-                            >Sign Up</Button>
+                            >Sign In</Button>
                         </Flex>
 
                         <Text textAlign="center">Don't have an account? <ChakraLink _hover={{color: "purple"}} as={Link} to="/sign_up">Sign Up Now!</ChakraLink></Text>
