@@ -36,6 +36,8 @@ const SignIn = () => {
     //james
    // const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => { // Renamed function to reflect its purpose (SignIn)
+
+
         event.preventDefault();
 
         setSignInError(null);

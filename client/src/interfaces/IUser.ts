@@ -4,4 +4,7 @@ export interface IUser {
     email: string;
     created_at: Date;
     token: string;
+    password?: string;
+    hobbies?: string;
+    interests?: string;
 }

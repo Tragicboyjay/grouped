@@ -10,13 +10,13 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ISignUpUser } from "../interfaces/ISignUpUser";
 import { useAuth } from "../context/authContext";
 
 const SignUp = () => {
     const toast = useToast();
-
+    const navigate = useNavigate();
     const [ usernameInput, setUsernameInput ] = useState<string | null>(null);
     const [ emailInput, setEmailInput ] = useState<string | null>(null);
     const [ passwordInput, setPasswordInput ] = useState<string | null>(null);
@@ -89,7 +89,7 @@ const SignUp = () => {
             setPasswordInput(null);
             setPasswordComfirmInput(null);
 
-
+            navigate('/sign_in');
 
         } catch (error) {
             if (error instanceof Error) {
