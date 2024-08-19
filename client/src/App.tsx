@@ -11,7 +11,7 @@ function App() {
     >
         <Navbar />
         <Box
-            py="2rem"
+            
             flex="1"
         >
             <Router />

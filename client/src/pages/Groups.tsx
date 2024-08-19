@@ -1,21 +1,29 @@
 import {
-     Heading, Button, Flex, Input, useToast
+     Heading, Button, Flex, Input, useToast,
+     Text,
+     Box,
+     VStack
 } from "@chakra-ui/react";
 import useGetFetch from "../hooks/useGetFetch";
 import React, { useState } from "react"; //
 import { IGroupData } from "../interfaces/IGroupData";
 import { IGroup } from "../interfaces/IGroup";
-import { useNavigate } from "react-router-dom";
+import MessageInput from "../components/MessageInput";
+// import { useNavigate } from "react-router-dom";
+
+interface MessagesState {
+    [key: string]: string[];
+  }
 
 const Groups: React.FC = () => {
     // Fetch groups data from the server
     const { data, loading, error } = useGetFetch<IGroupData>("http://localhost:8120/groups/all")
-
-    const navigate = useNavigate();
+    const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+    // const navigate = useNavigate();
     const toast = useToast();
     const [groupName, setGroupName] = useState<string>('');
     const [isCreating, setIsCreating] = useState<boolean>(false);
-
+    const [messages, setMessages] = useState<MessagesState>({});
 /*
     const handleCreateGroup = async () => {
         try {
@@ -110,66 +118,153 @@ const Groups: React.FC = () => {
 
     }; // <-- Add this closing bracket to properly close the function
 
+
+    const handleSendMessage = (message: string) => {
+        if (!selectedGroup) return;
+        setMessages((prev) => ({
+          ...prev,
+          [selectedGroup]: [...(prev[selectedGroup] || []), message],
+        }));
+
+    }
     return (
-        <Flex
-            flexDir="column"
-            alignItems="center"
-        >
-            <Heading
-                mb="2rem"
-            >Groups</Heading>
+        // <Flex
+        //     flexDir="column"
+        //     alignItems="center"
+        // >
+        //     <Heading
+        //         mb="2rem"
+        //     >Groups</Heading>
 
 
-            <Button onClick={() => setIsCreating(!isCreating)} mb="1rem">
+        //     <Button onClick={() => setIsCreating(!isCreating)} mb="1rem">
+        //         {isCreating ? 'Cancel' : 'Create Group'}
+        //     </Button>
+
+
+        //     {isCreating && (
+        //         <Flex mb="2rem" flexDir="column" alignItems="center">
+        //             <Input
+        //                 placeholder="Enter group name"
+        //                 value={groupName}
+        //                 onChange={(e) => setGroupName(e.target.value)}
+        //                 mb="1rem"
+        //             />
+        //             <Button onClick={handleCreateGroup}>Create</Button>
+        //         </Flex>
+        //     )}
+
+        //     <Flex
+        //         flexDir="column"
+        //         gap="1rem"
+        //         alignItems="center"
+        //     >
+
+        //         {/* Display loading state if data is being fetched */}
+        //         {loading && !error && <Heading>... Loading</Heading>}
+
+
+        //         {/* Display error message if there's an error */}
+        //         {/*error && !loading && <Heading>{error}</Heading> */}
+        //         {error && !loading && (
+        //             <Heading>
+        //                 {(error as unknown) instanceof Error ? (error as unknown as Error).message : 'An unknown error occurred'}
+        //             </Heading>
+        //         )}
+
+
+
+
+        //         {/* Map through the groups and display them */}
+        //         {data && data.groups.map( (group: IGroup) => (
+        //             <Heading
+
+        //                 key={group.group_id}
+        //                 onClick={() => navigate(`/chat/${group.group_id}`)}
+        //                 cursor="pointer"
+        //             >
+        //             {group.name}</Heading>
+        //         ))}
+        //     </Flex>
+        // </Flex>
+        <Flex h="100%">
+        {/* Sidebar */}
+        <Box w="20%" p={4} bg="gray.100" borderRight="1px" borderColor="gray.200">
+          <VStack align="start" spacing={4}>
+            <Text fontSize="2xl" fontWeight="bold">
+              Groups
+            </Text>
+            <Button colorScheme="blue" onClick={() => setIsCreating(!isCreating)} mb="1rem">
                 {isCreating ? 'Cancel' : 'Create Group'}
             </Button>
 
+            {/* Display loading state if data is being fetched */}
+            {loading && !error && <Heading>... Loading</Heading>}
 
-            {isCreating && (
-                <Flex mb="2rem" flexDir="column" alignItems="center">
-                    <Input
-                        placeholder="Enter group name"
-                        value={groupName}
-                        onChange={(e) => setGroupName(e.target.value)}
-                        mb="1rem"
-                    />
-                    <Button onClick={handleCreateGroup}>Create</Button>
-                </Flex>
+
+            {/* Display error message if there's an error */}
+            {/*error && !loading && <Heading>{error}</Heading> */}
+            {error && !loading && (
+                <Heading>
+                    {(error as unknown) instanceof Error ? (error as unknown as Error).message : 'An unknown error occurred'}
+                </Heading>
             )}
+             {/* Map through the groups and display them */}
+            {data && data.groups.map((group: IGroup) => (
+              <Button
+                key={group.group_id}
+                variant="ghost"
+                w="100%"
+                onClick={() => setSelectedGroup(group.name)}
+                colorScheme={selectedGroup === group.name ? 'teal' : 'gray'}
+              >
+                {group.name}
+              </Button>
+            ))}
+          </VStack>
+        </Box>
 
-            <Flex
-                flexDir="column"
-                gap="1rem"
-                alignItems="center"
-            >
-
-                {/* Display loading state if data is being fetched */}
-                {loading && !error && <Heading>... Loading</Heading>}
-
-
-                {/* Display error message if there's an error */}
-                {/*error && !loading && <Heading>{error}</Heading> */}
-                {error && !loading && (
-                    <Heading>
-                        {(error as unknown) instanceof Error ? (error as unknown as Error).message : 'An unknown error occurred'}
-                    </Heading>
-                )}
-
-
-
-
-                {/* Map through the groups and display them */}
-                {data && data.groups.map( (group: IGroup) => (
-                    <Heading
-
-                        key={group.group_id}
-                        onClick={() => navigate(`/chat/${group.group_id}`)}
-                        cursor="pointer"
-                    >
-                    {group.name}</Heading>
+        {/* Chat Window */}
+        <Flex flex={1} direction="column" justify="space-between">
+          <Box p={4} flex="1" overflowY="auto">
+            {isCreating ? (
+                    <Flex my="2rem" flexDir="column" alignItems="center">
+                        <Text fontSize="2xl" fontWeight="bold">
+                             Create New Group
+                         </Text>
+                        <Input
+                            placeholder="Enter group name"
+                            value={groupName}
+                            onChange={(e) => setGroupName(e.target.value)}
+                            my="1rem"
+                        />
+                        <Button onClick={handleCreateGroup}>Create</Button>
+                    </Flex>
+                )
+                : selectedGroup ? (
+              <VStack align="start" spacing={4}>
+                <Text fontSize="2xl" fontWeight="bold">
+                  {selectedGroup}
+                </Text>
+                {messages[selectedGroup]?.map((msg, index) => (
+                  <Box key={index} p={2} bg="teal.50" borderRadius="md">
+                    {msg}
+                  </Box>
                 ))}
-            </Flex>
+              </VStack>
+            ) : (
+              <Text>Select a group to start chatting</Text>
+            )}
+          </Box>
+
+          {/* Message Input */}
+          {selectedGroup && (
+            <Box p={4} bg="gray.50" borderTop="1px" borderColor="gray.200">
+              <MessageInput onSendMessage={handleSendMessage} />
+            </Box>
+          )}
         </Flex>
+      </Flex>
 
 
     );
