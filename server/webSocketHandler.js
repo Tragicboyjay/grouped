@@ -17,11 +17,12 @@ function handleWebSocketEvents(io) {
             }
 
             socket.join(data.group);
+            console.log('A user joined');
             socket.emit('message', { message: `Joined group ${data.group}` });
         });
 
         socket.on('message', async (msg) => {
-            console.log('Message received: ', msg);
+            // console.log('Message received: ', msg);
 
             const { messageBody, userId, groupId, currentDate } = msg;
 
@@ -51,7 +52,7 @@ function handleWebSocketEvents(io) {
                      WHERE m.message_id = ?`, 
                     [result.insertId]
                   );
-
+                
                 io.to(groupId).emit('message', { message: 'Message received', newMessage: newMessage[0] });
                 
             } catch (error) {
