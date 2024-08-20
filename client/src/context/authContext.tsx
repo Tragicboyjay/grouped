@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode, FC } from 'react';
+import { createContext, useContext, useState, ReactNode, FC } from 'react';
 import { IUser } from '../interfaces/IUser';
+
 
 interface AuthContextType {
   user: IUser | null;
@@ -56,8 +57,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser, updateEmail, updateUsername }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ user, loginUser, logoutUser, updateEmail, updateUsername }}>
+        {children}
+      </AuthContext.Provider>
   );
 };
