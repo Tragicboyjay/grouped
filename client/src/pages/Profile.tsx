@@ -16,11 +16,20 @@ import {
     ModalCloseButton,
     useDisclosure,
     Textarea,
+    VStack,
+    Image,
+    Grid,
+    GridItem,
+    Box
 } from "@chakra-ui/react";
 import { useAuth } from "../context/authContext";
 import { IUser } from "../interfaces/IUser";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Importing images
+import profileSettingsImage from "../assets/images/profile_settings.webp";
+import secureProfileImage from "../assets/images/secure_profile.webp";
 
 const Profile = () => {
     const { user, loginUser, logoutUser } = useAuth();
@@ -119,7 +128,6 @@ const Profile = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                //body: JSON.stringify({ newPassword, confirmPassword })
                 body: JSON.stringify({ currentPassword: confirmPassword, newPassword })
             });
 
@@ -214,20 +222,60 @@ const Profile = () => {
 
     return (
         <Flex
-            width="100%"
-            height="100%"
+            direction="column"
             align="center"
             justify="center"
+            minH="100vh"
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            p={5}
+            color="white"
         >
-            <Flex
-                width="100%"
-                px="2rem"
-                direction="column"
-                gap="2rem"
-                alignItems="center"
-                justifyContent="center"
-            >
+            <VStack spacing={8} maxW="800px" textAlign="center">
                 <Heading size="lg">Profile</Heading>
+
+                <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={8}>
+                    <GridItem>
+                        <Box
+                            bg="white"
+                            color="black"
+                            boxShadow="lg"
+                            p={5}
+                            borderRadius="md"
+                            transition="transform 0.3s"
+                            _hover={{ transform: "scale(1.05)", bg: "teal.50" }}
+                        >
+                            <Image
+                                src={profileSettingsImage}
+                                alt="Profile Settings"
+                                borderRadius="md"
+                                objectFit="cover"
+                                mb={4}
+                            />
+                            <Text>Profile Settings: Manage your personal information.</Text>
+                        </Box>
+                    </GridItem>
+
+                    <GridItem>
+                        <Box
+                            bg="white"
+                            color="black"
+                            boxShadow="lg"
+                            p={5}
+                            borderRadius="md"
+                            transition="transform 0.3s"
+                            _hover={{ transform: "scale(1.05)", bg: "blue.50" }}
+                        >
+                            <Image
+                                src={secureProfileImage}
+                                alt="Secure Profile"
+                                borderRadius="md"
+                                objectFit="cover"
+                                mb={4}
+                            />
+                            <Text>Secure Profile: Ensure your profile is protected.</Text>
+                        </Box>
+                    </GridItem>
+                </Grid>
 
                 {!isEditing ? (
                     <>
@@ -245,6 +293,7 @@ const Profile = () => {
                         <FormControl isRequired mb="1rem">
                             <FormLabel>Email</FormLabel>
                             <Input
+                                bg="white"
                                 type="email"
                                 placeholder="Email"
                                 value={emailInput || ""}
@@ -255,6 +304,7 @@ const Profile = () => {
                         <FormControl mb="1rem">
                             <FormLabel>Hobbies</FormLabel>
                             <Textarea
+                                bg="white"
                                 placeholder="Enter your hobbies"
                                 value={hobbiesInput || ""}
                                 onChange={(e) => setHobbiesInput(e.target.value)}
@@ -264,6 +314,7 @@ const Profile = () => {
                         <FormControl mb="1rem">
                             <FormLabel>Interests</FormLabel>
                             <Textarea
+                                bg="white"
                                 placeholder="Enter your interests"
                                 value={interestsInput || ""}
                                 onChange={(e) => setInterestsInput(e.target.value)}
@@ -293,7 +344,7 @@ const Profile = () => {
                 }} mt="1rem">
                     Delete Account
                 </Button>
-            </Flex>
+            </VStack>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
