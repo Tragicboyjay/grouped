@@ -182,7 +182,8 @@ const SignUp = () => {
                     <FormControl isRequired mb="1rem">
                         <FormLabel>Username</FormLabel>
                         <Input
-                            bg="white" // Set background to white
+                            color="black"
+                            bg="white"
                             placeholder="Username"
                             value={usernameInput || ""}
                             onChange={handleUsernameInputChange}
@@ -192,7 +193,8 @@ const SignUp = () => {
                     <FormControl isRequired mb="1rem">
                         <FormLabel>Email</FormLabel>
                         <Input
-                            bg="white" // Set background to white
+                            color="black"
+                            bg="white"
                             type="email"
                             placeholder="Email"
                             value={emailInput || ""}
@@ -203,7 +205,8 @@ const SignUp = () => {
                     <FormControl isRequired mb="1rem">
                         <FormLabel>Password</FormLabel>
                         <Input
-                            bg="white" // Set background to white
+                            color="black"
+                            bg="white"
                             type="password"
                             placeholder="Password"
                             value={passwordInput || ""}
@@ -214,7 +217,8 @@ const SignUp = () => {
                     <FormControl isRequired mb="1rem">
                         <FormLabel>Confirm Password</FormLabel>
                         <Input
-                            bg="white" // Set background to white
+                            color="black"
+                            bg="white"
                             type="password"
                             placeholder="Confirm Password"
                             value={passwordComfirmInput || ""}
