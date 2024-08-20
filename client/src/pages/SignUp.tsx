@@ -1,18 +1,27 @@
-import { 
-    Heading, 
-    Flex, 
+import {
+    Heading,
+    Flex,
     Input,
     Button,
     FormControl,
     FormLabel,
     Link as ChakraLink,
     Text,
+    VStack,
+    Image,
+    Grid,
+    GridItem,
     useToast,
+    Box
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ISignUpUser } from "../interfaces/ISignUpUser";
 import { useAuth } from "../context/authContext";
+
+// Importing images
+import signUpImage from "../assets/images/sign_up.webp";
+import secureAccessImage from "../assets/images/secure_access.webp";
 
 const SignUp = () => {
     const toast = useToast();
@@ -38,7 +47,8 @@ const SignUp = () => {
     const handlePasswordComfirmInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordComfirmInput(event.target.value);
     }
-//  Handle sign-up form submission
+
+    // Handle sign-up form submission
     const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -106,106 +116,125 @@ const SignUp = () => {
             } else {
                 setSignUpError('An unknown error occurred.');
             }
-
-
         }
-        
-
-
     }
 
-    return (  
+    return (
         <Flex
-            width="100%"
-            height="100%"
+            direction="column"
             align="center"
             justify="center"
+            minH="100vh"
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            p={5}
+            color="white"
         >
-            <Flex
-                width="100%"
-                px="2rem"
-                direction="column"
-                gap="2rem"
-                alignItems="center"
-                justifyContent="center"
-
-            >
+            <VStack spacing={8} maxW="800px" textAlign="center">
                 <Heading size="lg">Sign Up</Heading>
 
-                    <form style={{width: "50%", minWidth: "250px"}} onSubmit={e => handleSignUp(e)}>
-                        <Text textAlign="center" color='red' mb="1rem">{signUpError}</Text>
-
-                        <FormControl
-                            isRequired
-                            mb="1rem"
+                <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={8}>
+                    <GridItem>
+                        <Box
+                            bg="white"
+                            color="black"
+                            boxShadow="lg"
+                            p={5}
+                            borderRadius="md"
+                            transition="transform 0.3s"
+                            _hover={{ transform: "scale(1.05)", bg: "teal.50" }}
                         >
-                            <FormLabel>Username</FormLabel>
-                            <Input
-                                placeholder="Username"
-                                value={!usernameInput ? "" : usernameInput}
-                                onChange={handleUsernameInputChange}
+                            <Image
+                                src={signUpImage}
+                                alt="Sign Up"
+                                borderRadius="md"
+                                objectFit="cover"
+                                mb={4}
                             />
-                        </FormControl>
+                            <Text>Sign Up: Create an account to access all features.</Text>
+                        </Box>
+                    </GridItem>
 
-                        <FormControl
-                            isRequired
-                            mb="1rem"
+                    <GridItem>
+                        <Box
+                            bg="white"
+                            color="black"
+                            boxShadow="lg"
+                            p={5}
+                            borderRadius="md"
+                            transition="transform 0.3s"
+                            _hover={{ transform: "scale(1.05)", bg: "blue.50" }}
                         >
-                            <FormLabel>Email</FormLabel>
-                            <Input
-                                type="email"
-                                placeholder="Email"
-                                value={!emailInput? "" : emailInput}
-                                onChange={handleEmailInputChange}
+                            <Image
+                                src={secureAccessImage}
+                                alt="Secure Access"
+                                borderRadius="md"
+                                objectFit="cover"
+                                mb={4}
                             />
-                        </FormControl>
+                            <Text>Secure Access: Enjoy secure and private access to your account.</Text>
+                        </Box>
+                    </GridItem>
+                </Grid>
 
-                        <FormControl
-                            isRequired
-                            mb="1rem"
-                        >
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                type="password"
-                                placeholder="Password"
-                                value={!passwordInput? "" : passwordInput}
-                                onChange={handlePasswordInputChange}
-                            />
-                        </FormControl>
+                <form style={{ width: "100%", maxWidth: "400px" }} onSubmit={handleSignUp}>
+                    <Text textAlign="center" color='red' mb="1rem">{signUpError}</Text>
 
-                        <FormControl
-                            isRequired
-                            mb="1rem"
-                        >
-                            <FormLabel>Confirm Password</FormLabel>
-                            <Input
-                                type="password"
-                                placeholder="Confirm Password"
-                                value={!passwordComfirmInput? "" : passwordComfirmInput}
-                                onChange={handlePasswordComfirmInputChange}
-                            />
-                        </FormControl>
+                    <FormControl isRequired mb="1rem">
+                        <FormLabel>Username</FormLabel>
+                        <Input
+                            bg="white" // Set background to white
+                            placeholder="Username"
+                            value={usernameInput || ""}
+                            onChange={handleUsernameInputChange}
+                        />
+                    </FormControl>
 
-                        <Flex
-                            mb='1REM'
-                            justifyContent="center"
-                        >
-                            <Button
-                                colorScheme="purple"
-                                type="submit"
-                            >Sign Up</Button>
-                        </Flex>
+                    <FormControl isRequired mb="1rem">
+                        <FormLabel>Email</FormLabel>
+                        <Input
+                            bg="white" // Set background to white
+                            type="email"
+                            placeholder="Email"
+                            value={emailInput || ""}
+                            onChange={handleEmailInputChange}
+                        />
+                    </FormControl>
 
-                        <Text textAlign="center">Already have an account? <ChakraLink _hover={{color: "purple"}} as={Link} to="/sign_in">Sign In!</ChakraLink></Text>
+                    <FormControl isRequired mb="1rem">
+                        <FormLabel>Password</FormLabel>
+                        <Input
+                            bg="white" // Set background to white
+                            type="password"
+                            placeholder="Password"
+                            value={passwordInput || ""}
+                            onChange={handlePasswordInputChange}
+                        />
+                    </FormControl>
 
-                    </form>
+                    <FormControl isRequired mb="1rem">
+                        <FormLabel>Confirm Password</FormLabel>
+                        <Input
+                            bg="white" // Set background to white
+                            type="password"
+                            placeholder="Confirm Password"
+                            value={passwordComfirmInput || ""}
+                            onChange={handlePasswordComfirmInputChange}
+                        />
+                    </FormControl>
 
+                    <Flex mb='1REM' justifyContent="center">
+                        <Button colorScheme="purple" type="submit">Sign Up</Button>
+                    </Flex>
 
-
-
-            </Flex>
+                    <Text textAlign="center">Already have an account?
+                        <ChakraLink _hover={{color: "purple"}} as={Link} to="/sign_in">
+                            Sign In!
+                        </ChakraLink>
+                    </Text>
+                </form>
+            </VStack>
         </Flex>
     );
 }
- 
+
 export default SignUp;

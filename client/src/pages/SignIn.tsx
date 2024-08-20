@@ -1,6 +1,6 @@
-import { 
-    Heading, 
-    Flex, 
+import {
+    Heading,
+    Flex,
     Input,
     Button,
     FormControl,
@@ -8,21 +8,27 @@ import {
     Link as ChakraLink,
     Text,
     useToast,
+    VStack,
+    Box,
+    Image,
+    Grid,
+    GridItem
 } from "@chakra-ui/react";
 import { useState } from "react";
-//import { Link } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom"; // Added useNavigate to handle navigation after successful sign-in
+import { Link, useNavigate } from "react-router-dom";
 import { ISignInUser } from "../interfaces/ISignInUser";
 import { useAuth } from "../context/authContext";
 
+// Importing images
+import signInImage from "../assets/images/sign_in.webp";
+import secureAccessImage from "../assets/images/secure_access.webp";
+
 const SignIn = () => {
     const toast = useToast();
-    const navigate = useNavigate(); //james  Added navigate function for redirecting after successful sign-in
+    const navigate = useNavigate();
 
     const [ usernameInput, setUsernameInput ] = useState<string | null>(null);
     const [ passwordInput, setPasswordInput ] = useState<string | null>(null);
-
-
     const [ signInError, setSignInError ] = useState<string | null>(null);
 
     const { loginUser } = useAuth();
@@ -30,27 +36,24 @@ const SignIn = () => {
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsernameInput(event.target.value);
     }
+
     const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPasswordInput(event.target.value);
     }
-    //james
-   // const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
-    const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => { // Renamed function to reflect its purpose (SignIn)
 
-
+    const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         setSignInError(null);
 
         try {
             if (!usernameInput || !passwordInput) {
-                throw new Error("All Fields Must be filled out.")
+                throw new Error("All Fields Must be filled out.");
             }
 
-            const authUser:ISignInUser = {
+            const authUser: ISignInUser = {
                 username: usernameInput.toLowerCase(),
                 password: passwordInput
-            }
+            };
 
             const response = await fetch("http://localhost:8120/auth/authenticate", {
                 method: 'POST',
@@ -68,21 +71,20 @@ const SignIn = () => {
             const data = await response.json();
 
             loginUser(data.user);
-            console.log(data);  // debug the response
-            localStorage.setItem('token', data.user.token);  // Save the token
+            localStorage.setItem('token', data.user.token);
+
             toast({
                 title: data.message,
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
                 position: "top",
-            })
+            });
 
             setUsernameInput(null);
             setPasswordInput(null);
 
-            // Navigate to the profile or home page after successful sign-in
-            navigate('/profile'); // Assuming you have a profile page; replace with the appropriate path
+            navigate('/profile');
 
         } catch (error) {
             if (error instanceof Error) {
@@ -94,88 +96,95 @@ const SignIn = () => {
                     duration: 3000,
                     isClosable: true,
                     position: "top",
-                })
-
+                });
             } else {
                 setSignInError('An unknown error occurred.');
             }
-
-  
         }
-        
-
-
     }
 
-    return (  
+    return (
         <Flex
             width="100%"
-            height="100%"
+            height="100vh"
             align="center"
             justify="center"
+            bgGradient="linear(to-r, teal.400, blue.500)"
+            p={5}
         >
-            <Flex
+            <Box
+                bg="white"
+                p={8}
+                borderRadius="md"
+                boxShadow="lg"
                 width="100%"
-                px="2rem"
-                direction="column"
-                gap="2rem"
-                alignItems="center"
-                justifyContent="center"
-
+                maxW="500px"
+                textAlign="center"
             >
-                <Heading size="lg">Sign In</Heading>
+                {/* Images Grid */}
+                <Grid templateColumns="repeat(2, 1fr)" gap={6} mb={8}>
+                    <GridItem>
+                        <Image
+                            src={signInImage}
+                            alt="Sign In"
+                            borderRadius="md"
+                            objectFit="cover"
+                            width="100%"
+                            height="150px"
+                        />
+                    </GridItem>
+                    <GridItem>
+                        <Image
+                            src={secureAccessImage}
+                            alt="Secure Access"
+                            borderRadius="md"
+                            objectFit="cover"
+                            width="100%"
+                            height="150px"
+                        />
+                    </GridItem>
+                </Grid>
 
-                {/*james <form style={{width: "50%", minWidth: "250px"}} onSubmit={e => handleSignUp(e)}> */}
-                    <form style={{width: "50%", minWidth: "250px"}} onSubmit={handleSignIn}>
+                <Heading size="lg" mb={6} color="teal.600">Sign In</Heading>
 
-                        <Text textAlign="center" color='red' mb="1rem">{signInError}</Text>
+                <form onSubmit={handleSignIn}>
+                    <VStack spacing={4}>
+                        <Text color='red' mb="1rem">{signInError}</Text>
 
-                        <FormControl
-                            isRequired
-                            mb="1rem"
-                        >
+                        <FormControl isRequired>
                             <FormLabel>Username</FormLabel>
                             <Input
                                 placeholder="Username"
-                                value={!usernameInput ? "" : usernameInput}
+                                value={usernameInput || ""}
                                 onChange={handleUsernameInputChange}
                             />
                         </FormControl>
 
-                        <FormControl
-                            isRequired
-                            mb="1rem"
-                        >
+                        <FormControl isRequired>
                             <FormLabel>Password</FormLabel>
                             <Input
                                 type="password"
                                 placeholder="Password"
-                                value={!passwordInput ? "" : passwordInput}
+                                value={passwordInput || ""}
                                 onChange={handlePasswordInputChange}
                             />
                         </FormControl>
 
+                        <Button colorScheme="teal" width="full" type="submit">
+                            Sign In
+                        </Button>
+                    </VStack>
+                </form>
 
-                        <Flex
-                            mb='1REM'
-                            justifyContent="center"
-                        >
-                            <Button
-                                colorScheme="purple"
-                                type="submit"
-                            >Sign In</Button>
-                        </Flex>
-
-                        <Text textAlign="center">Don't have an account? <ChakraLink _hover={{color: "purple"}} as={Link}
-                                                                                    to="/sign_up">Sign Up
-                            Now!</ChakraLink></Text>
-
-                    </form>
-
-
-            </Flex>
+                <Text mt={4}>
+                    Don't have an account?{" "}
+                    <ChakraLink color="teal.500" as={Link} to="/sign_up">
+                        Sign Up Now!
+                    </ChakraLink>
+                </Text>
+            </Box>
         </Flex>
-);
+    );
 }
 
 export default SignIn;
