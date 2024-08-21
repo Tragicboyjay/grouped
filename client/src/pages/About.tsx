@@ -6,6 +6,8 @@ import collaborativeEnvironmentImage from "../assets/images/collaborative_enviro
 import supportiveCommunityImage from "../assets/images/supportive_community.webp";
 import continuousGrowthImage from "../assets/images/continuous_growth.webp";
 
+import { Helmet } from "react-helmet";
+
 const About = () => {
     return (
         <Flex
@@ -17,6 +19,16 @@ const About = () => {
             p={5}
             color="white"
         >
+            <Helmet>
+                <title>About | Grouped</title>
+                <meta name="description" content="Learn more about Grouped, a platform designed to foster meaningful interactions and build communities where people can connect, collaborate, and grow together." />
+                <meta name="keywords" content="Grouped, about Grouped, community, collaboration, growth, interests, connection" />
+                <meta property="og:title" content="About Grouped | Bringing People Together" />
+                <meta property="og:description" content="Grouped is a platform where everyone can find a place to belong, share their passions, and engage in discussions that matter to them." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
+
             <VStack spacing={8} maxW="800px" textAlign="center">
                 <Heading as="h2" size="2xl" mt={6} mb={4}>
                     About Grouped

@@ -23,6 +23,8 @@ import { useAuth } from "../context/authContext";
 import signUpImage from "../assets/images/sign_up.webp";
 import secureAccessImage from "../assets/images/secure_access.webp";
 
+import { Helmet } from "react-helmet";
+
 const SignUp = () => {
     const toast = useToast();
     const navigate = useNavigate();
@@ -129,6 +131,14 @@ const SignUp = () => {
             p={5}
             color="white"
         >
+            <Helmet>
+                <title>Sign Up | Grouped</title>
+                <meta name="description" content="Create a new account on Grouped. Sign up to connect with communities, join groups, and start engaging with like-minded individuals." />
+                <meta name="keywords" content="sign up, create account, Grouped, user registration, secure access, join groups" />
+                <meta property="og:title" content="Sign Up | Grouped" />
+                <meta property="og:description" content="Sign up for Grouped to start connecting with communities and managing your profile. Join today and start exploring!" />
+                <meta property="og:type" content="website" />
+            </Helmet>
             <VStack spacing={8} maxW="800px" textAlign="center">
                 <Heading size="lg">Sign Up</Heading>
 

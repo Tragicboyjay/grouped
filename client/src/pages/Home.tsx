@@ -8,6 +8,8 @@ import growingNetworkImage from "../assets/images/growing_network.webp";
 import virtualGroupDiscussionImage from "../assets/images/virtual_group_discussion.webp";
 import notificationIconImage from "../assets/images/notification_icon_1.webp";
 
+import { Helmet } from "react-helmet";
+
 const Home: React.FC = () => {
     return (
         <Flex
@@ -19,6 +21,16 @@ const Home: React.FC = () => {
             p={5}
             color="white"
         >
+
+            <Helmet>
+                <title>Home | Grouped</title>
+                <meta name="description" content="Welcome to Grouped. Discover, join, and connect with like-minded people through our platform. Explore features like messaging, group discussions, and network growth." />
+                <meta name="keywords" content="home, Grouped, connect, join groups, messaging, network growth, discussions" />
+                <meta property="og:title" content="Home | Grouped" />
+                <meta property="og:description" content="Join and connect with others on Grouped. Explore features like messaging, group discussions, and network growth to engage with like-minded individuals." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
             <VStack spacing={8} maxW="800px" textAlign="center">
                 {/* Main Heading */}
                 <Heading as="h1" size="2xl" mb={4}>

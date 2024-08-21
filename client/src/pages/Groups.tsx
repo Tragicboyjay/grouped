@@ -13,6 +13,7 @@ import { IGroup } from "../interfaces/IGroup";
 import MessageInput from "../components/MessageInput";
 import { io, Socket } from 'socket.io-client';
 // import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 interface MessagesState {
     [key: string]: string[];
@@ -133,6 +134,15 @@ const Groups: React.FC = () => {
     return (
         
         <Flex h="100%">
+            <Helmet>
+                <title>Groups | Grouped</title>
+                <meta name="description" content="View and manage your groups on Grouped. Join existing groups or create new ones to start chatting with others." />
+                <meta name="keywords" content="groups, Grouped, create group, join group, chat, messaging" />
+                <meta property="og:title" content="Groups | Grouped" />
+                <meta property="og:description" content="Explore and manage your groups on Grouped. Create new groups or join existing ones to connect with others." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
         {/* Sidebar */}
         <Box w="20%" p={4} bg="gray.100" borderRight="1px" borderColor="gray.200">
           <VStack align="start" spacing={4}>

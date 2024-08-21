@@ -23,6 +23,8 @@ import { useAuth } from "../context/authContext";
 import signInImage from "../assets/images/sign_in.webp";
 import secureAccessImage from "../assets/images/secure_access.webp";
 
+import { Helmet } from "react-helmet";
+
 const SignIn = () => {
     const toast = useToast();
     const navigate = useNavigate();
@@ -112,6 +114,15 @@ const SignIn = () => {
             bgGradient="linear(to-r, teal.400, blue.500)"
             p={5}
         >
+            <Helmet>
+                <title>Sign In | Grouped</title>
+                <meta name="description" content="Sign in to Grouped to access your account. Enter your username and password to log in and start connecting with your groups." />
+                <meta name="keywords" content="sign in, login, Grouped, user authentication, secure access, account" />
+                <meta property="og:title" content="Sign In | Grouped" />
+                <meta property="og:description" content="Access your Grouped account by signing in with your username and password. Connect with your groups and manage your profile." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
             <Box
                 bg="white"
                 p={8}

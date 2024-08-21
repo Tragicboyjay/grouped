@@ -26,6 +26,7 @@ import { useAuth } from "../context/authContext";
 import { IUser } from "../interfaces/IUser";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 // Importing images
 import profileSettingsImage from "../assets/images/profile_settings.webp";
@@ -230,6 +231,16 @@ const Profile = () => {
             p={5}
             color="white"
         >
+            <Helmet>
+                <title>Profile | Grouped</title>
+                <meta name="description" content="Manage your profile on Grouped, including updating your email, hobbies, and interests, and changing your password." />
+                <meta name="keywords" content="profile settings, Grouped, update profile, change email, hobbies, interests, change password, delete account" />
+                <meta property="og:title" content="Profile Settings | Grouped" />
+                <meta property="og:description" content="Update your personal information, change your password, or delete your account on Grouped." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
+
             <VStack spacing={8} maxW="800px" textAlign="center">
                 <Heading size="lg">Profile</Heading>
 

@@ -5,6 +5,7 @@ import contactSupportImage from "../assets/images/contact_support.webp";
 import feedbackImage from "../assets/images/feedback.webp";
 import sayHelloImage from "../assets/images/say_hello.webp";
 import connectWithUsImage from "../assets/images/connect_with_us.webp";
+import { Helmet } from "react-helmet";
 
 const Contact = () => {
     return (
@@ -17,6 +18,16 @@ const Contact = () => {
             p={5}
             color="white"
         >
+            <Helmet>
+                <title>Contact Us | Grouped</title>
+                <meta name="description" content="Get in touch with us for support, feedback, or just to say hello. We'd love to hear from you!" />
+                <meta name="keywords" content="contact Grouped, support, feedback, connect with us, say hello" />
+                <meta property="og:title" content="Contact Us | Grouped" />
+                <meta property="og:description" content="Reach out to us for any assistance, provide feedback, or simply connect with the Grouped team." />
+                <meta property="og:type" content="website" />
+            </Helmet>
+
+
             <VStack spacing={8} maxW="800px" textAlign="center">
                 {/* Main Heading */}
                 <Heading as="h2" size="2xl" mt={6} mb={4}>
