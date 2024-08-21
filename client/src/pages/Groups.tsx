@@ -4,7 +4,7 @@ import {
      Box,
      VStack
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from '../context/authContext';
 import useGetFetch from "../hooks/useGetFetch";
 import React, { useEffect, useState, useRef } from "react"; //
@@ -25,6 +25,18 @@ const Groups: React.FC = () => {
     const { data, loading, error } = useGetFetch<IGroupData>(`http://localhost:8120/groups/all`);
     const [selectedGroup, setSelectedGroup] = useState<IGroup | null>(null);
     const { user } = useAuth();
+
+    const navigate = useNavigate();
+
+    // user roles -- justice
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/sign_in');
+        }
+    }, [user,navigate])
+
+    // -----
     // const navigate = useNavigate();
     const toast = useToast();
     const [groupName, setGroupName] = useState<string>('');

@@ -14,7 +14,7 @@ import {
     useToast,
     Box
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ISignUpUser } from "../interfaces/ISignUpUser";
 import { useAuth } from "../context/authContext";
@@ -35,7 +35,14 @@ const SignUp = () => {
 
     const [ signUpError, setSignUpError ] = useState<string | null>(null);
 
-    const { loginUser } = useAuth();
+    const { user, loginUser } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/profile');
+        }
+    }, [user,navigate])
+
 
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsernameInput(event.target.value);

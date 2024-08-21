@@ -14,7 +14,7 @@ import {
     Grid,
     GridItem
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ISignInUser } from "../interfaces/ISignInUser";
 import { useAuth } from "../context/authContext";
@@ -26,6 +26,7 @@ import secureAccessImage from "../assets/images/secure_access.webp";
 import { Helmet } from "react-helmet";
 
 const SignIn = () => {
+    
     const toast = useToast();
     const navigate = useNavigate();
 
@@ -33,7 +34,13 @@ const SignIn = () => {
     const [ passwordInput, setPasswordInput ] = useState<string | null>(null);
     const [ signInError, setSignInError ] = useState<string | null>(null);
 
-    const { loginUser } = useAuth();
+    const { user, loginUser } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/profile');
+        }
+    }, [user,navigate])
 
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsernameInput(event.target.value);

@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useAuth } from "../context/authContext";
 import { IUser } from "../interfaces/IUser";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
@@ -48,6 +48,16 @@ const Profile = () => {
     const [interestsInput, setInterestsInput] = useState<string | undefined>(user?.interests);
 
     const [actionType, setActionType] = useState<string | null>(null);
+
+        // user roles -- justice
+
+        useEffect(() => {
+            if (!user) {
+                navigate('/sign_in');
+            }
+        }, [user,navigate])
+    
+        // -----
 
     const handleUpdateProfile = async () => {
         try {
