@@ -121,13 +121,13 @@ const Profile = () => {
                 throw new Error("Please enter your current password to confirm the change.");
             }
 
-            const token = localStorage.getItem('token');
+
 
             const response = await fetch("http://localhost:8120/users/updatePassword", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${user?.token}`
                 },
                 body: JSON.stringify({ currentPassword: confirmPassword, newPassword })
             });
@@ -169,12 +169,10 @@ const Profile = () => {
                 throw new Error("Please enter your password to confirm deletion.");
             }
 
-            const token = localStorage.getItem('token');
-
             const response = await fetch(`http://localhost:8120/users/delete/${user?.id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${user?.token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ password: confirmPassword })
@@ -301,7 +299,7 @@ const Profile = () => {
                     </>
                 ) : (
                     <>
-                        <FormControl isRequired mb="1rem">
+                        <FormControl isRequired mb="1rem" color="black">
                             <FormLabel>Email</FormLabel>
                             <Input
                                 bg="white"
@@ -312,7 +310,7 @@ const Profile = () => {
                             />
                         </FormControl>
 
-                        <FormControl mb="1rem">
+                        <FormControl mb="1rem" color="black">
                             <FormLabel>Hobbies</FormLabel>
                             <Textarea
                                 bg="white"
@@ -322,7 +320,7 @@ const Profile = () => {
                             />
                         </FormControl>
 
-                        <FormControl mb="1rem">
+                        <FormControl mb="1rem"  color="black">
                             <FormLabel>Interests</FormLabel>
                             <Textarea
                                 bg="white"
