@@ -2,15 +2,15 @@ import { Button, HStack, Input } from "@chakra-ui/react";
 import { useState } from "react";
 
 interface MessageInputProps {
-    onSendMessage: (message: string) => void;
+    onSend: (message: string) => void;
   }
   
-  const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
+  const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
     const [message, setMessage] = useState<string>('');
   
     const handleSend = () => {
       if (message.trim()) {
-        onSendMessage(message.trim());
+        onSend(message.trim());
         setMessage('');
       }
     };

@@ -45,24 +45,45 @@ async function getMessagesByUser(req,res) {
     }
 }
 
-async function getMessagesByGroup(req,res) {
+async function getMessagesByGroup(req, res) {
     const { groupId } = req.params;
 
-    if (!groupId) return res.status(400).json({ message: "No group id provided"});
-    
+    if (!groupId) {
+        return res.status(400).json({ message: "No group id provided" });
+    }
+
     const query = util.promisify(db.query).bind(db);
 
-    try{
+    try {
+        // Check if the group exists
         const existingGroup = await query("SELECT 1 FROM `groups` WHERE group_id = ?", [groupId]);
 
-        if (existingGroup.length < 1) return res.status(409).json({ message: "Invalid group id submited"});
-        
-        const messages = await query("SELECT * FROM messages where group_id = ?", [groupId]);
+        if (existingGroup.length < 1) {
+            return res.status(409).json({ message: "Invalid group id submitted" });
+        }
 
-        return res.status(200).json({ message: "Messages fetched successfully", messages});
+        // Fetch messages along with user information
+        const messages = await query(`
+              SELECT 
+                m.message_id AS messageId,
+                m.body AS messageBody,
+                m.authour_id AS userId,  
+                m.group_id AS groupId,
+                m.sent_at AS sentAt,
+                u.username 
+            FROM messages m
+            JOIN users u ON m.authour_id = u.user_id  
+            WHERE m.group_id = ? 
+            ORDER BY m.sent_at ASC
+        `, [groupId]);
+
+        return res.status(200).json({
+            message: "Messages fetched successfully",
+            messages
+        });
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
