@@ -1,7 +1,7 @@
 export interface IMessage {
-    body: string;
+    messageBody: string;
     authorId: number;
     groupId: number;
-    sent_at: string;
+    sentAt: string;
     username?: string;
   }
