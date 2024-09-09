@@ -1,0 +1,40 @@
+html {
+  font-size: 14px;
+  background-color: #1a202c; /* Dark background like the primary project */
+  color: white; /* Text color should be white for consistency */
+}
+
+body {
+  margin-bottom: 60px;
+  background-color: inherit; /* Ensuring the body follows the same background */
+}
+
+.btn {
+  background-color: #4A5568; /* Matching button color (gray) */
+  color: white;
+}
+
+.btn:hover {
+  background-color: #2D3748; /* Darker gray on hover */
+}
+
+.navbar {
+  background-color: #1A202C; /* Dark navbar like your primary project */
+}
+
+.footer {
+  background-color: black; /* Matching footer color from the primary project */
+  color: white;
+}
+
+a {
+  color: #63B3ED; /* Light blue for links to match primary project */
+}
+
+a:hover {
+  color: #2C7A7B; /* Teal on hover */
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}

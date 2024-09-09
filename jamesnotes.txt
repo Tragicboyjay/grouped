@@ -1,1 +1,5 @@
 client % npm install --save-dev @types/react-helmet
+dotnet add package FirebaseAdmin
+
+dotnet add package FirebaseDatabase.net
+dotnet add package FirebaseAdmin
