@@ -16,11 +16,10 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
-const NavLink = ({ children, to, isExternal = false }: { children: React.ReactNode, to: string, isExternal?: boolean }) => (
+const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) => (
     <ChakraLink
-        as={isExternal ? "a" : RouterLink}  // Use "a" tag for external links, RouterLink for internal
-        {...(isExternal ? { href: to } : { to })}
-        target={isExternal ? "_blank" : undefined}  // Open external links in a new tab if external
+        as={RouterLink}
+        to={to}
         px={2}
         py={1}
         rounded={'md'}
@@ -53,7 +52,7 @@ const NavBar: React.FC = () => {
             { label: 'Home', path: '/' },
             { label: 'About', path: '/about' },
             { label: 'Contact', path: '/contact' },
-            { label: 'Blog', path: '/blog' },  // Handled by React
+            { label: 'Blog', path: '/blog' },          // New Blog page route for unauthenticated users
         ]
         : [
             { label: 'Home', path: '/' },
@@ -61,7 +60,9 @@ const NavBar: React.FC = () => {
             { label: 'Contact', path: '/contact' },
             { label: 'Groups', path: '/groups' },
             { label: 'Profile', path: '/profile' },
-            { label: 'Blog', path: '/blog' },  // Handled by React
+            { label: 'Blog', path: '/blog' },          // New Blog page route for authenticated users
+            { label: 'Create Post', path: '/blog/create' },  // Link to create blog post
+            { label: 'Edit Post', path: '/blog/edit' },      // Link to edit blog post
         ];
 
     return (
@@ -76,14 +77,19 @@ const NavBar: React.FC = () => {
                     color="white"
                 />
                 <HStack spacing={8} alignItems={'center'}>
-                    <Box onClick={() => navigate("/")} cursor="pointer">
+                    <Box
+                        onClick={() => navigate("/")}
+                        cursor="pointer"
+                    >
                         <Heading size="md" color="white">Grouped</Heading>
                     </Box>
-                    <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                    <HStack
+                        as={'nav'}
+                        spacing={4}
+                        display={{ base: 'none', md: 'flex' }}
+                    >
                         {Links.map((link) => (
-                            <NavLink key={link.label} to={link.path}>
-                                {link.label}
-                            </NavLink>
+                            <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
                         ))}
                     </HStack>
                 </HStack>
@@ -116,15 +122,13 @@ const NavBar: React.FC = () => {
                 <Box pb={4} display={{ md: 'none' }}>
                     <Stack as={'nav'} spacing={4}>
                         {Links.map((link) => (
-                            <NavLink key={link.label} to={link.path}>
-                                {link.label}
-                            </NavLink>
+                            <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
                         ))}
                     </Stack>
                 </Box>
             ) : null}
         </Box>
     );
-};
+}
 
 export default NavBar;
