@@ -45,17 +45,20 @@ const Groups: React.FC = () => {
     useEffect(() => {
         // Initialize WebSocket connection when the component mounts
         const socketInstance = io("http://localhost:8120");
+        console.log("WebSocket connection initialized");
+
+        setSocket(socketInstance);
 
         socketInstance.on("connect", () => {
             console.log("Connected to the Socket.IO server");
         });
 
+        // Listen for new messages and update the message list
         socketInstance.on("message", (data) => {
-            console.log("Message received:", data);
-
             const messageData = data.newMessage || data;
+            console.log("Message received:", messageData);
 
-            if (messageData && selectedGroup) {
+            if (messageData && messageData.groupId) {
                 setMessages((prevMessages: MessagesState) => ({
                     ...prevMessages,
                     [messageData.groupId]: [
@@ -70,14 +73,13 @@ const Groups: React.FC = () => {
             console.log("Disconnected from the Socket.IO server");
         });
 
-        setSocket(socketInstance);
-
         // Cleanup on component unmount
         return () => {
             socketInstance.disconnect();
             setSocket(null);
+            console.log("WebSocket connection cleaned up");
         };
-    }, [selectedGroup]);
+    }, []);
 
     useEffect(() => {
         if (selectedGroup) {
@@ -85,6 +87,7 @@ const Groups: React.FC = () => {
             fetch(`http://localhost:8120/messages/all/group/${selectedGroup.group_id}`)
                 .then((response) => response.json())
                 .then((data) => {
+                    console.log(`Fetched messages for group ${selectedGroup.group_id}:`, data);
                     setMessages((prevMessages) => ({
                         ...prevMessages,
                         [selectedGroup.group_id]: data.messages,
@@ -95,11 +98,10 @@ const Groups: React.FC = () => {
                 });
 
             // Join the selected group via socket
-            if (socket) {
-                socket.emit("join-group", {
-                    selectedGroup: selectedGroup.group_id,
-                });
-            }
+            socket?.emit("join-group", {
+                selectedGroup: selectedGroup.group_id,
+            });
+            console.log(`Joining group ${selectedGroup.group_id}`);
         }
     }, [selectedGroup, socket]);
 
@@ -130,6 +132,8 @@ const Groups: React.FC = () => {
                 groupId: newMessage.groupId,
                 currentDate: newMessage.sentAt,
             });
+
+            console.log(`Message sent: ${message}`);
         }
     };
 
@@ -162,6 +166,7 @@ const Groups: React.FC = () => {
 
             // Immediately add the new group to the list
             setSelectedGroup(result.group); // Automatically select the new group after creation
+            console.log("New group created and selected:", result.group);
         } catch (error) {
             if (error instanceof Error) {
                 toast({
