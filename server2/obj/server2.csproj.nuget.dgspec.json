@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/james/Desktop/server2/server2.csproj": {}
+    "/Users/james/Desktop/FSD files/GitHub/grouped/server2/server2.csproj": {}
   },
   "projects": {
-    "/Users/james/Desktop/server2/server2.csproj": {
+    "/Users/james/Desktop/FSD files/GitHub/grouped/server2/server2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/james/Desktop/server2/server2.csproj",
+        "projectUniqueName": "/Users/james/Desktop/FSD files/GitHub/grouped/server2/server2.csproj",
         "projectName": "server2",
-        "projectPath": "/Users/james/Desktop/server2/server2.csproj",
+        "projectPath": "/Users/james/Desktop/FSD files/GitHub/grouped/server2/server2.csproj",
         "packagesPath": "/Users/james/.nuget/packages/",
-        "outputPath": "/Users/james/Desktop/server2/obj/",
+        "outputPath": "/Users/james/Desktop/FSD files/GitHub/grouped/server2/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/james/.nuget/NuGet/NuGet.Config"
