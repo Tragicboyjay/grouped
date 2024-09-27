@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grouped Test</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const groupNumber = 5;
+        let socket;
+
+        window.onload = () => {
+            socket = io('http://localhost:8120');
+
+            socket.on('connect', () => {
+                console.log('Connected to the Socket.IO server');
+                socket.emit('join-group', { group: groupNumber });
+            });
+
+            socket.on('message', (data) => {
+                console.log('Message received:', data);
+                const messageBox = document.getElementById('messageBox');
+                const newMessage = document.createElement('div');
+                if (data.newMessage) {
+                    newMessage.textContent = `${data.newMessage.username}: ${data.newMessage.body}`;
+                } else {
+                    newMessage.textContent = data.message;
+                }
+                messageBox.appendChild(newMessage);
+            });
+
+            socket.on('disconnect', () => {
+                console.log('Disconnected from the Socket.IO server');
+            });
+
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.addEventListener('click', handleSend);
+        };
+
+        function handleSend() {
+            const messageInput = document.getElementById('messageInput');
+            const messageBody = messageInput.value;
+
+            const newMessage = {
+                messageBody: messageBody,
+                userId: 7,
+                groupId: groupNumber,
+                currentDate: new Date()
+            };
+
+            socket.emit('message', newMessage);
+            messageInput.value = ''; 
+        }
+    </script>
+</head>
+<body>
+    <h1>Test UI</h1>
+    <div>
+        <input id="messageInput" type="text">
+        <button id="sendBtn">Send</button>
+    </div>
+    <div id="messageBox"></div>
+</body>
+</html>

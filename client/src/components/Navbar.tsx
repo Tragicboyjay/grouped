@@ -1,0 +1,130 @@
+import React from 'react';
+import {
+  Box,
+  Flex,
+  HStack,
+  IconButton,
+  Button,
+  useDisclosure,
+  Stack,
+  Link as ChakraLink,
+  Text,
+  Heading,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
+
+const NavLink = ({ children, to }: { children: React.ReactNode, to: string }) => (
+    <ChakraLink
+        as={RouterLink}
+        to={to}
+        px={2}
+        py={1}
+        rounded={'md'}
+        _hover={{
+          textDecoration: 'none',
+          bg: useColorModeValue('gray.700', 'gray.600'),
+          color: 'white',
+        }}
+        _focus={{
+          boxShadow: 'outline',
+        }}
+        color="white"
+    >
+      {children}
+    </ChakraLink>
+);
+
+const NavBar: React.FC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const { user, logoutUser } = useAuth();
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate('/sign_in');
+  };
+
+  const Links = !user
+      ? [
+        { label: 'Home', path: '/' },
+        { label: 'About', path: '/about' },
+        { label: 'Contact', path: '/contact' },
+      ]
+      : [
+        { label: 'Home', path: '/' },
+        { label: 'About', path: '/about' },
+        { label: 'Contact', path: '/contact' },
+        { label: 'Groups', path: '/groups' },
+        { label: 'Profile', path: '/profile' },
+      ];
+
+  return (
+      <Box bg="black" px={4}>
+        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+          <IconButton
+              size={'md'}
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              aria-label={'Open Menu'}
+              display={{ md: 'none' }}
+              onClick={isOpen ? onClose : onOpen}
+              color="white"
+          />
+          <HStack spacing={8} alignItems={'center'}>
+            <Box
+                onClick={() => navigate("/")}
+                cursor="pointer"
+            >
+              <Heading size="md" color="white">Grouped</Heading>
+            </Box>
+            <HStack
+                as={'nav'}
+                spacing={4}
+                display={{ base: 'none', md: 'flex' }}
+            >
+              {Links.map((link) => (
+                  <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
+              ))}
+            </HStack>
+          </HStack>
+          <Flex alignItems={'center'}>
+            {user ? (
+                <>
+                  <Text color="white" cursor="pointer" onClick={() => navigate('/profile')}>
+                    <i className="fa-solid fa-user"></i> {user.username}
+                  </Text>
+                  <Box mx={2}></Box>
+                  <Button colorScheme="red" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </>
+            ) : (
+                <Button
+                    onClick={() => navigate("/sign_in")}
+                    _hover={{ color: "purple" }}
+                    variant={'solid'}
+                    colorScheme={'purple'}
+                    size={'sm'}
+                >
+                  Log in
+                </Button>
+            )}
+          </Flex>
+        </Flex>
+
+        {isOpen ? (
+            <Box pb={4} display={{ md: 'none' }}>
+              <Stack as={'nav'} spacing={4}>
+                {Links.map((link) => (
+                    <NavLink key={link.label} to={link.path}>{link.label}</NavLink>
+                ))}
+              </Stack>
+            </Box>
+        ) : null}
+      </Box>
+  );
+}
+
+export default NavBar;
